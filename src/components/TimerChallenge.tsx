@@ -5,7 +5,7 @@ import ResultModal from './ResultModal'
 
 export default function TimerChallenge({ title, targetTime }) {
     const timer = useRef<NodeJS.Timeout | undefined>()
-    const dialog = useRef<HTMLDialogElement | undefined>()
+    const modal = useRef<HTMLDialogElement | undefined>()
 
     const [timerExpired, setTimerExpired] = useState(false)
     const [timerStarted, setTimerStarted] = useState(false)
@@ -14,7 +14,7 @@ export default function TimerChallenge({ title, targetTime }) {
         timer.current = setTimeout(() => {
             setTimerExpired(true)
             setTimerStarted(false)
-            dialog.current.showModal()
+            modal.current.open()
         }, targetTime * 1000)
         setTimerStarted(true)
     }
@@ -26,14 +26,13 @@ export default function TimerChallenge({ title, targetTime }) {
 
     return (
         <>
-    <ResultModal ref={dialog} targetTime={targetTime} result="lost" />
+    <ResultModal ref={modal} targetTime={targetTime} result="lost" />
       <Card className='text-center'>
-        {timerExpired && <p>Time is up!</p>}
         <CardHeader className='text-center'>
             <CardTitle>{ title }</CardTitle>
         </CardHeader>
         <CardContent>
-            <p>
+            <p className="mb-3">
                 { targetTime} second{targetTime > 1 ? 's' : ''} 
             </p>
             <div>
